@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 Happy Birthday! 🎂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff6b9d;
+            --secondary: #feca57;
+            --accent: #48dbfb;
+            --purple: #a29bfe;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Countdown Screen */
+        .countdown-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .countdown-screen.hidden {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
+
+        .countdown-container {
+            text-align: center;
+            animation: fade-in-scale 1s ease-out;
+        }
+
+        @keyframes fade-in-scale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .countdown-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            animation: pulse-glow-text 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow-text {
+            0%, 100% {
+                text-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                text-shadow: 0 5px 30px rgba(255, 255, 255, 0.5),
+                             0 0 50px rgba(255, 202, 87, 0.4);
+            }
+        }
+
+        .countdown-number {
+            font-size: 12rem;
+            font-weight: 700;
+            color: var(--secondary);
+            text-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            margin: 30px 0;
+            animation: countdown-bounce 1s ease-in-out;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes countdown-bounce {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .countdown-instruction {
+            font-size: 1.5rem;
+            color: white;
+            margin-top: 40px;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 25px 60px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 50px;
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.5);
+            transition: all 0.3s;
+            font-family: 'Quicksand', sans-serif;
+            animation: pulse-button 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-button {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 15px 40px rgba(255, 107, 157, 0.5);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 20px 50px rgba(255, 107, 157, 0.8);
+            }
+        }
+
+        .start-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.8);
+        }
+
+        .start-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Hide main content initially */
+        .main-content {
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Balloons */
+        .balloon {
+            position: fixed;
+            bottom: -150px;
+            width: 80px;
+            height: 100px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: float-up 6s ease-in infinite;
+            z-index: 1;
+        }
+
+        @keyframes float-up {
+            0% {
+                bottom: -150px;
+                opacity: 1;
+            }
+            100% {
+                bottom: 100vh;
+                opacity: 0;
+            }
+        }
+
+        .balloon::before {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Card */
+        .birthday-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 60px 50px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: slide-in 1s ease-out, card-glow 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slide-in {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes card-glow {
+            0%, 100% {
+                box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3),
+                            0 0 60px rgba(255, 107, 157, 0.3),
+                            inset 0 0 60px rgba(255, 202, 87, 0.1);
+            }
+        }
+
+        .birthday-card::before {
+            content: '✨';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 3rem;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        .birthday-card::after {
+            content: '✨';
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 3rem;
+            animation: sparkle 2s ease-in-out infinite 1s;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+            50% { opacity: 0.5; transform: scale(1.3) rotate(180deg); }
+        }
+
+        /* Title */
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 4rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: rainbow 3s ease infinite, float-title 3s ease-in-out infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float-title {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 600;
+            animation: pulse-text 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-text {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        /* Cake */
+        .cake-container {
+            margin: 40px 0;
+            position: relative;
+            display: inline-block;
+        }
+
+        .cake {
+            font-size: 8rem;
+            animation: cake-bounce 2s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s;
+            filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.6));
+            position: relative;
+        }
+
+        .cake:hover {
+            transform: scale(1.1) rotate(5deg);
+            animation: cake-bounce 0.5s ease-in-out infinite, spin-glow 1s ease-in-out infinite;
+        }
+
+        @keyframes cake-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes spin-glow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.8)) 
+                        drop-shadow(0 0 40px rgba(255, 107, 157, 0.4));
+            }
+            50% { 
+                filter: drop-shadow(0 0 30px rgba(255, 202, 87, 0.8)) 
+                        drop-shadow(0 0 60px rgba(255, 202, 87, 0.4));
+            }
+        }
+
+        /* Message */
+        .message {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #444;
+            margin: 30px 0;
+            max-width: 600px;
+        }
+
+        .highlight {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Wishes List */
+        .wishes-list {
+            margin: 40px 0;
+            text-align: left;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: shimmer-bg 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer-bg {
+            0%, 100% { 
+                background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            }
+            50% { 
+                background: linear-gradient(135deg, #fab1a0 0%, #ffeaa7 100%);
+            }
+        }
+
+        .wishes-list::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .wishes-list h2 {
+            font-family: 'Pacifico', cursive;
+            color: #d63031;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            animation: bounce-title 2s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes bounce-title {
+            0%, 100% { transform: translateY(0) scale(1); }
+            25% { transform: translateY(-5px) scale(1.02); }
+            75% { transform: translateY(-3px) scale(1.01); }
+        }
+
+        .wishes-list ul {
+            list-style: none;
+        }
+
+        .wishes-list li {
+            padding: 12px 0;
+            font-size: 1.1rem;
+            color: #2d3436;
+            position: relative;
+            padding-left: 35px;
+            animation: fade-in-up 0.6s ease-out backwards;
+        }
+
+        .wishes-list li:nth-child(1) { animation-delay: 0.2s; }
+        .wishes-list li:nth-child(2) { animation-delay: 0.4s; }
+        .wishes-list li:nth-child(3) { animation-delay: 0.6s; }
+        .wishes-list li:nth-child(4) { animation-delay: 0.8s; }
+        .wishes-list li:nth-child(5) { animation-delay: 1s; }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .wishes-list li::before {
+            content: '🎈';
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+            animation: swing-balloon 2s ease-in-out infinite;
+            transform-origin: top center;
+        }
+
+        @keyframes swing-balloon {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        /* Button */
+        .celebrate-btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--primary));
+            background-size: 200% 200%;
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
+            transition: all 0.3s;
+            font-family: 'Quicksand', sans-serif;
+            animation: gradient-shift 3s ease infinite, pulse-glow 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
+            }
+            50% { 
+                box-shadow: 0 10px 40px rgba(255, 107, 157, 0.7),
+                            0 0 20px rgba(255, 107, 157, 0.5);
+            }
+        }
+
+        .celebrate-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .celebrate-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .celebrate-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 50px rgba(255, 107, 157, 0.8);
+        }
+
+        .celebrate-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+
+        .footer strong {
+            color: var(--secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .birthday-card {
+                padding: 40px 30px;
+            }
+
+            .cake {
+                font-size: 5rem;
+            }
+
+            .message {
+                font-size: 1.1rem;
+            }
+
+            .wishes-list h2 {
+                font-size: 1.5rem;
+            }
+
+            .photo-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .gallery-title, .quotes-title {
+                font-size: 1.5rem;
+            }
+
+            .quote-card {
+                padding: 30px 25px;
+            }
+
+            .quote-text {
+                font-size: 1.1rem;
+            }
+
+            .quote-dots {
+                margin-top: 230px;
+            }
+        }
+
+        /* Fireworks effect */
+        .firework {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Floating hearts */
+        .heart {
+            position: fixed;
+            bottom: -50px;
+            font-size: 30px;
+            opacity: 0.8;
+            animation: float-heart 6s ease-in infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes float-heart {
+            0% {
+                bottom: -50px;
+                opacity: 0.8;
+                transform: translateX(0) rotate(0deg);
+            }
+            50% {
+                transform: translateX(20px) rotate(180deg);
+            }
+            100% {
+                bottom: 100vh;
+                opacity: 0;
+                transform: translateX(-20px) rotate(360deg);
+            }
+        }
+
+        /* Message animation */
+        .message {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #444;
+            margin: 30px 0;
+            max-width: 600px;
+            animation: fade-in 1.5s ease-out;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Photo Gallery Styles */
+        .photo-gallery {
+            margin: 40px 0;
+            animation: fade-in 1.8s ease-out;
+        }
+
+        .gallery-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            animation: float-title 3s ease-in-out infinite;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .photo-card {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+            animation: fade-in-up 0.8s ease-out backwards;
+        }
+
+        .photo-card:nth-child(1) { animation-delay: 0.2s; }
+        .photo-card:nth-child(2) { animation-delay: 0.4s; }
+        .photo-card:nth-child(3) { animation-delay: 0.6s; }
+
+        .photo-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(255, 107, 157, 0.3);
+        }
+
+        .photo-placeholder {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 3px dashed var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .photo-card:hover .photo-placeholder {
+            background: rgba(255, 255, 255, 1);
+            border-color: var(--accent);
+        }
+
+        .photo-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            animation: bounce-icon 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce-icon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .photo-placeholder p {
+            color: #666;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .photo-caption {
+            margin-top: 12px;
+            text-align: center;
+            color: #2d3436;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Quotes Section Styles */
+        .quotes-section {
+            margin: 50px 0 40px 0;
+            animation: fade-in 2s ease-out;
+        }
+
+        .quotes-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            color: var(--purple);
+            margin-bottom: 30px;
+            animation: pulse-text 2s ease-in-out infinite;
+        }
+
+        .quote-carousel {
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quote-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 25px;
+            padding: 40px 35px;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            position: absolute;
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.6s ease;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .quote-card.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            z-index: 2;
+            position: relative;
+        }
+
+        .quote-icon {
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.3);
+            font-family: Georgia, serif;
+            line-height: 0.5;
+            margin-bottom: 20px;
+        }
+
+        .quote-text {
+            color: white;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            font-weight: 600;
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        .quote-author {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            text-align: right;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        .quote-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 250px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot:hover {
+            background: rgba(102, 126, 234, 0.6);
+            transform: scale(1.2);
+        }
+
+        .dot.active {
+            background: var(--purple);
+            transform: scale(1.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Countdown Screen -->
+    <div class="countdown-screen" id="countdownScreen">
+        <div class="countdown-container">
+            <h1 class="countdown-title">Get Ready for the Celebration! 🎉</h1>
+            <div class="countdown-number" id="countdownNumber"></div>
+            <p class="countdown-instruction">Click the button below to start the countdown!</p>
+            <button class="start-button" id="startButton" onclick="startCountdown()">
+                🎊 Start Countdown 🎊
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden Initially) -->
+    <div class="main-content" id="mainContent">
+        <!-- Confetti -->
+        <div id="confetti-container"></div>
+
+        <!-- Balloons -->
+        <div id="balloons-container"></div>
+
+        <div class="container">
+        <div class="birthday-card">
+            <h1>Happy Birthday! 🎉</h1>
+            <p class="subtitle">Bro ❤️</p>
+
+            <div class="cake-container">
+                <div class="cake" id="cake" onclick="celebrateCake()">🎂</div>
+            </div>
+
+            <div class="message">
+                Another year older, another year <span class="highlight">wiser</span>, 
+                and another year of <span class="highlight">incredible memories</span> together! 
+                May this special day be filled with joy, laughter, and all the things that make you smile. 
+                Here's to celebrating <span class="highlight">YOU</span> today and always! 🥳
+            </div>
+
+            <!-- Photo Gallery Section -->
+            <div class="photo-gallery">
+                
+                <div class="photo-grid">
+                    <div class="photo-card">
+                        <div class="photo-placeholder">
+                            <img src="C:\Users\pavan\Downloads\young-boy-is-ready-school-cartoon-character-white-background_628924-7061.avif" alt="Young boy" style="width: 100%; height: auto; border-radius: 15px;">
+                        
+                        </div>
+                        <p class="photo-caption">Beautiful memories</p>
+                    </div>
+                    <div class="photo-card">
+                        <div class="photo-placeholder">
+                            <img src="C:\Users\pavan\Downloads\WhatsApp Image 2026-02-26 at 19.09.16.jpeg" alt="Special moment" style="width: 100%; height: auto; border-radius: 15px;"> 
+                            
+                        </div>
+                        <p class="photo-caption">Forever cherished</p>
+                    </div>
+                    <div class="photo-card">
+                        <div class="photo-placeholder">
+                            <img src="C:\Users\pavan\Downloads\WhatsApp Image 2026-02-26 at 18.59.57.jpeg" alt="Memorable moment" style="width: 100%; height: auto; border-radius: 15px;">
+            
+                        </div>
+                        <p class="photo-caption">Pure happiness</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inspirational Quotes Section -->
+            <div class="quotes-section">
+                <h2 class="quotes-title">Words Just For You 💝</h2>
+                <div class="quote-carousel">
+                    <div class="quote-card active">
+                        <div class="quote-icon">"</div>
+                        <p class="quote-text">She believed she could, so she did.</p>
+                        
+                    </div>
+                    <div class="quote-card">
+                        <div class="quote-icon">"</div>
+                        <p class="quote-text">A strong woman looks a challenge in the eye and gives it a wink.</p>
+                       
+                    </div>
+                    <div class="quote-card">
+                        <div class="quote-icon">"</div>
+                        <p class="quote-text">Be yourself, everyone else is already taken.</p>
+                        
+                    </div>
+                    <div class="quote-card">
+                        <div class="quote-icon">"</div>
+                        <p class="quote-text">She is clothed in strength and dignity, and she laughs without fear of the future.</p>
+                        
+                    </div>
+                    <div class="quote-card">
+                        <div class="quote-icon">"</div>
+                        <p class="quote-text">The most beautiful thing you can wear is confidence.</p>
+                        
+                    </div>
+                </div>
+                <div class="quote-dots">
+                    <span class="dot active" onclick="showQuote(0)"></span>
+                    <span class="dot" onclick="showQuote(1)"></span>
+                    <span class="dot" onclick="showQuote(2)"></span>
+                    <span class="dot" onclick="showQuote(3)"></span>
+                    <span class="dot" onclick="showQuote(4)"></span>
+                </div>
+            </div>
+
+            <div class="wishes-list">
+                <h2>Birthday Wishes For You! 🎁</h2>
+                <ul>
+                    <li>May all your dreams and wishes come true this year!</li>
+                    <li>Wishing you health, happiness, and endless adventures!</li>
+                    <li>May you be surrounded by love and laughter always!</li>
+                    <li>Here's to more incredible memories and fun times together!</li>
+                    <li>Cheers to another year of being absolutely awesome! 🌟</li>
+                </ul>
+            </div>
+
+            <button class="celebrate-btn" onclick="triggerCelebration()">
+                🎊 Celebrate! 🎊
+            </button>
+        </div>
+
+        <div class="footer">
+            Made with <strong>❤️</strong> for an incredible friend!
+        </div>
+    </div>
+    </div> <!-- End of main-content -->
+
+    <script>
+        // Generate Confetti
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#ff6b9d', '#feca57', '#48dbfb', '#a29bfe', '#ff7979'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                container.appendChild(confetti);
+            }
+        }
+
+        // Generate Balloons
+        function createBalloons() {
+            const container = document.getElementById('balloons-container');
+            const colors = ['#ff6b9d', '#feca57', '#48dbfb', '#a29bfe', '#ff7979'];
+            
+            setInterval(() => {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = Math.random() * 100 + 'vw';
+                balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                container.appendChild(balloon);
+                
+                setTimeout(() => balloon.remove(), 7000);
+            }, 2000);
+        }
+
+        // Generate Floating Hearts
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                document.body.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 7000);
+            }, 3000);
+        }
+
+        // Cake celebration
+        function celebrateCake() {
+            const cake = document.getElementById('cake');
+            cake.textContent = '🎉';
+            setTimeout(() => cake.textContent = '🎂', 1000);
+        }
+
+        // Fireworks effect
+        function createFirework(x, y) {
+            const colors = ['#ff6b9d', '#feca57', '#48dbfb', '#a29bfe', '#ff7979'];
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                
+                const angle = (Math.PI * 2 * i) / particleCount;
+                const velocity = 2 + Math.random() * 2;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                document.body.appendChild(particle);
+                
+                let posX = x;
+                let posY = y;
+                let opacity = 1;
+                
+                const animate = () => {
+                    posX += vx * 5;
+                    posY += vy * 5;
+                    opacity -= 0.02;
+                    
+                    particle.style.left = posX + 'px';
+                    particle.style.top = posY + 'px';
+                    particle.style.opacity = opacity;
+                    
+                    if (opacity > 0) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        particle.remove();
+                    }
+                };
+                
+                animate();
+            }
+        }
+
+        // Main celebration function
+        function triggerCelebration() {
+            // Multiple fireworks
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight * 0.5;
+                    createFirework(x, y);
+                }, i * 300);
+            }
+            
+            // Play with cake emoji
+            const cake = document.getElementById('cake');
+            const emojis = ['🎂', '🎉', '🎊', '🎁', '🥳', '🎈'];
+            let count = 0;
+            
+            const emojiInterval = setInterval(() => {
+                cake.textContent = emojis[count % emojis.length];
+                count++;
+                if (count > 12) {
+                    clearInterval(emojiInterval);
+                    cake.textContent = '🎂';
+                }
+            }, 200);
+        }
+
+        // Initialize
+        createConfetti();
+        createBalloons();
+        createHearts();
+
+        // Quote carousel functionality
+        let currentQuote = 0;
+        const quotes = document.querySelectorAll('.quote-card');
+        const dots = document.querySelectorAll('.dot');
+
+        function showQuote(index) {
+            quotes.forEach(quote => quote.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            quotes[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentQuote = index;
+        }
+
+        // Auto-rotate quotes every 5 seconds
+        setInterval(() => {
+            currentQuote = (currentQuote + 1) % quotes.length;
+            showQuote(currentQuote);
+        }, 5000);
+
+        // Countdown functionality
+        let countdownValue = 5;
+        let countdownInterval;
+
+        function startCountdown() {
+            const button = document.getElementById('startButton');
+            const instruction = document.querySelector('.countdown-instruction');
+            const countdownNumber = document.getElementById('countdownNumber');
+            
+            // Hide button and instruction
+            button.style.display = 'none';
+            instruction.style.display = 'none';
+            
+            // Start countdown from 5
+            countdownValue = 5;
+            countdownNumber.textContent = countdownValue;
+            countdownNumber.style.animation = 'countdown-bounce 1s ease-in-out';
+            
+            countdownInterval = setInterval(() => {
+                countdownValue--;
+                
+                if (countdownValue > 0) {
+                    countdownNumber.textContent = countdownValue;
+                    // Reset animation
+                    countdownNumber.style.animation = 'none';
+                    setTimeout(() => {
+                        countdownNumber.style.animation = 'countdown-bounce 1s ease-in-out';
+                    }, 10);
+                } else {
+                    // Show "Happy Birthday!" before revealing
+                    countdownNumber.innerHTML = '🎉<br>Happy Birthday!<br>🎉';
+                    countdownNumber.style.fontSize = '4rem';
+                    
+                    setTimeout(() => {
+                        revealBirthdayPage();
+                    }, 2000);
+                    
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+        }
+
+        function revealBirthdayPage() {
+            const countdownScreen = document.getElementById('countdownScreen');
+            const mainContent = document.getElementById('mainContent');
+            
+            // Hide countdown screen
+            countdownScreen.classList.add('hidden');
+            
+            // Show main content after a delay
+            setTimeout(() => {
+                mainContent.classList.add('visible');
+                countdownScreen.style.display = 'none';
+                
+                // Start animations
+                createConfetti();
+                createBalloons();
+                createHearts();
+                
+                // Trigger celebration fireworks
+                setTimeout(() => {
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => {
+                            const x = window.innerWidth / 2;
+                            const y = window.innerHeight / 2;
+                            createFirework(x + (Math.random() - 0.5) * 300, y + (Math.random() - 0.5) * 200);
+                        }, i * 400);
+                    }
+                }, 500);
+            }, 800);
+        }
+
+        // Don't auto-start animations on page load
+        // They will start after countdown completes
+    </script>
+</body>
+</html>
